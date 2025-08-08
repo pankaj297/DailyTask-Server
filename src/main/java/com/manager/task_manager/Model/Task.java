@@ -1,52 +1,85 @@
 package com.manager.task_manager.Model;
 
 
+
+import jakarta.persistence.*;
+import java.time.LocalDateTime;
+
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-import jakarta.persistence.Entity;
-
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 
 @Entity
+@Table(name = "tasks")
 public class Task {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long taskId;
+    private Long id;
 
-    private String tasksName;
+    private String title;
+    private String description;
+    private LocalDateTime createdAt = LocalDateTime.now();
+    private boolean completed = false;
 
+    // Many tasks belong to one user
     @ManyToOne
     @JoinColumn(name = "user_id")
     @JsonBackReference(value = "user-task")
     private User user;
 
+    // Many tasks belong to one category
     @ManyToOne
     @JoinColumn(name = "category_id")
-    @JsonBackReference(value = "category-task")
+     @JsonBackReference(value = "category-task")
     private Category category;
 
-    public Long getTaskId() {
-        return taskId;
+    // getters & setters
+
+
+
+    public Task() {
+        // Default constructor
     }
 
-    public void setTaskId(Long taskId) {
-        this.taskId = taskId;
+    public Long getId() {
+        return id;
     }
 
-    public String getTasksName() {
-        return tasksName;
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setTasksName(String tasksName) {
-        this.tasksName = tasksName;
+    public String getTitle() {
+        return title;
     }
 
+    public void setTitle(String title) {
+        this.title = title;
+    }
 
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public boolean isCompleted() {
+        return completed;
+    }
+
+    public void setCompleted(boolean completed) {
+        this.completed = completed;
+    }
 
     public User getUser() {
         return user;
@@ -64,22 +97,7 @@ public class Task {
         this.category = category;
     }
 
-    public Task(Long taskId, String tasksName, User user, Category category) {
-        this.taskId = taskId;
-        this.tasksName = tasksName;
-        this.user = user;
-        this.category = category;
-    }
-
-    public Task() {
-    }
-
-    @Override
-    public String toString() {
-        return "Task [taskId=" + taskId + ", tasksName=" + tasksName + ", user=" + user
-                + ", category=" + category + "]";
-    }
-
-
 
 }
+
+

@@ -1,34 +1,37 @@
 package com.manager.task_manager.Model;
 
-import java.util.List;
+import jakarta.persistence.*;
+import java.util.*;
 
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-
 @Entity
+@Table(name = "categories")
 public class Category {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long catId;
+    private Long id;
 
     private String name;
 
-    @JsonManagedReference(value = "category-task")
+    // One category has many tasks
     @OneToMany(mappedBy = "category", cascade = CascadeType.ALL)
-    private List<Task> task;
+    @JsonManagedReference(value = "category-task")
+    private List<Task> tasks = new ArrayList<>();
 
-    public Long getCatId() {
-        return catId;
+    // getters & setters
+
+    public Category() {
+        // Default constructor
     }
 
-    public void setCatId(Long catId) {
-        this.catId = catId;
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
     }
 
     public String getName() {
@@ -39,28 +42,18 @@ public class Category {
         this.name = name;
     }
 
-    public List<Task> getTask() {
-        return task;
+    public List<Task> getTasks() {
+        return tasks;
     }
 
-    public void setTask(List<Task> task) {
-        this.task = task;
+    public void setTasks(List<Task> tasks) {
+        this.tasks = tasks;
     }
 
-    public Category(Long catId, String name, List<Task> task) {
-        this.catId = catId;
+
+    public Category(Long id, String name) {
+        this.id = id;
         this.name = name;
-        this.task = task;
     }
-
-    public Category() {
-    }
-
-    @Override
-    public String toString() {
-        return "Category [catId=" + catId + ", name=" + name + ", task=" + task + "]";
-    }
-
 
 }
-
