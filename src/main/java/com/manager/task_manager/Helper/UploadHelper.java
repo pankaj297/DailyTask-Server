@@ -15,7 +15,7 @@ public class UploadHelper {
 
     public boolean uploadFile(MultipartFile file, String fileName) {
         try {
-          
+
             fileName = Paths.get(fileName).getFileName().toString();
             Files.createDirectories(Paths.get(UPLOAD_DIR));
             Path fullPath = Paths.get(UPLOAD_DIR, fileName);
@@ -26,4 +26,7 @@ public class UploadHelper {
             return false;
         }
     }
+    
+
+    
 }

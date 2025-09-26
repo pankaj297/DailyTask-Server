@@ -23,6 +23,9 @@ public class AuthController {
     @Autowired
     private UploadHelper uploadHelper;
 
+
+    
+
     @PostMapping("/register")
     public ResponseEntity<String> addUser(
             @RequestParam("name") String name,
@@ -75,16 +78,35 @@ public class AuthController {
         }
     }
 
+    
+
     @PostMapping("/login")
     public ResponseEntity<?> loginUser(@RequestBody User user) {
-        Optional<User> existing = userService.findByEmail(user.getEmail());
+        try {
+            if (user == null || user.getEmail() == null || user.getPassword() == null) {
+                return ResponseEntity.badRequest().body("Email और Password जरूरी हैं");
+            }
 
-        if (existing.isEmpty() || !existing.get().getPassword().equals(user.getPassword())) {
-            return ResponseEntity
-                    .status(HttpStatus.UNAUTHORIZED)
-                    .body("Invalid email or password.");
+            Optional<User> existing = userService.findByEmail(user.getEmail());
+
+            if (existing.isEmpty()) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid email");
+            }
+
+            if (existing.get().getPassword() == null ||
+                    !existing.get().getPassword().equals(user.getPassword())) {
+                return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid password");
+            }
+
+            return ResponseEntity.ok(existing.get());
+
+        } catch (Exception e) {
+            e.printStackTrace(); // Console में error दिखाने के लिए
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Server error: " + e.getMessage());
         }
-
-        return ResponseEntity.ok(existing.get());
     }
+
+
+
 }

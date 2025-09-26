@@ -32,6 +32,11 @@ public class TaskService {
         return taskRepo.save(task);
     }
 
+    //get data by user
+    public List<Task> getTasksByUserAndCategory(User user, Long categoryId) {
+        return taskRepo.findByUserAndCategory_Id(user, categoryId);
+    }
+
     // ✅ Get tasks for logged-in user
     public List<Task> getTasksByUser(User user) {
         return taskRepo.findByUser(user);
@@ -59,5 +64,10 @@ public class TaskService {
     // ✅ Get single task by ID
     public Task getTaskById(Long id) {
         return taskRepo.findById(id).orElse(null);
+    }
+
+
+    public List<Task> getTasksByCategoryName(String name) {
+        return taskRepo.findByCategory_Name(name);
     }
 }

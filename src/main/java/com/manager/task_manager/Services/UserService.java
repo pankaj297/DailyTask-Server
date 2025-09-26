@@ -26,9 +26,13 @@ public class UserService {
     public User getUserById(Long id) {
         return userRepo.findById(id).orElse(null);
     }
-    
+
     public User createUser(User user) {
         return userRepo.save(user);
     }
 
+    // Add this method for updating user
+    public User updateUser(User user) {
+        return userRepo.save(user);
+    }
 }

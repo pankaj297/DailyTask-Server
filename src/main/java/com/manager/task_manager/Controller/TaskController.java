@@ -22,6 +22,18 @@ public class TaskController {
     @Autowired
     private UserService userService;
 
+
+    @GetMapping("/user/{userId}/category/{categoryId}")
+    public ResponseEntity<?> getTasksByUserAndCategory(@PathVariable Long userId, @PathVariable Long categoryId) {
+        User user = userService.getUserById(userId);
+        if (user == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+        }
+
+        List<Task> tasks = taskService.getTasksByUserAndCategory(user, categoryId);
+        return ResponseEntity.ok(tasks);
+    }
+
     @PostMapping("/add")
     public ResponseEntity<?> addTask(
             @RequestBody Task task,
@@ -71,4 +83,12 @@ public class TaskController {
 
         return ResponseEntity.ok(task);
     }
+
+
+    @GetMapping("/category/{name}")
+    public ResponseEntity<?> getTasksByCategory(@PathVariable String name) {
+        List<Task> tasks = taskService.getTasksByCategoryName(name);
+        return ResponseEntity.ok(tasks);
+    }
+    
 }
